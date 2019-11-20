@@ -1,0 +1,95 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+typedef struct stack
+{
+    int data;
+    struct stack* next;
+}stack;
+
+void push(stack** head,int data)
+{
+    stack* newnode=(stack*)malloc(sizeof(stack));
+    newnode->data=data;
+    newnode->next=*head;
+    *head=newnode;
+}
+
+void pop(stack** head)
+{
+    stack* temp=*head;
+    *head=temp->next;
+    temp=NULL;
+    free(temp);
+}
+
+int top(stack* head)
+{
+    return head->data;
+}
+
+int isEmpty(stack* head)
+{
+    if(!head)
+    return 1;
+    else
+    return 0;
+}
+
+int main() {
+
+    int n;
+    scanf("%d",&n);
+    while(n)
+    {
+        int arr[n],demo[n],k=0;
+        for(int i=0;i<n;i++)
+        {
+            scanf("%d",&arr[i]);
+        }
+        stack* st=NULL;
+        for(int i=0;i<n;i++)
+        {
+            if(isEmpty(st)|| top(st)>arr[i])
+            {
+                push(&st,arr[i]);
+            }
+            else
+            {
+                while(!isEmpty(st) && top(st)<arr[i])
+                {
+                    demo[k]=top(st);
+                    k++;
+                    pop(&st);
+                }
+                push(&st,arr[i]);
+            }
+        }
+        while(!isEmpty(st))
+        {
+            demo[k]=top(st);
+            k++;
+            pop(&st);
+        }
+        int flag=1;
+        for(int i=0;i<k;i++)
+        {
+            if(demo[i]!=(i+1))
+            {
+                flag=0;
+                break;
+            }
+        }
+        if(flag==0)
+        printf("no\n");
+        else
+        printf("yes\n");
+        scanf("%d",&n);
+    }
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    return 0;
+}

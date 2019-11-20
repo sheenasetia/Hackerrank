@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct stack
+{
+    char data;
+    struct stack* next;
+}stack;
+
+void push(stack** head,char data)
+{
+    stack* newnode=(stack*)malloc(sizeof(stack));
+    newnode->data=data;
+    newnode->next=*head;
+    *head=newnode;
+}
+
+void pop(stack** head)
+{
+    stack* temp=*head;
+    *head=temp->next;
+    temp=NULL;
+    free(temp);
+}
+
+char top(stack* head)
+{
+    return head->data;
+}
+
+int isEmpty(stack* head)
+{
+    if(!head)
+    return 1;
+    else
+    return 0;
+}
+int priority(char a,char b)
+{
+    if((a=='+'&& b=='-' )|| (a=='-' && b=='+' )||(a=='/'&& b=='*' )|| (a=='*' && b=='/' ) )
+    return 1;
+    else if(a=='*' ||a=='/')
+    return 1;
+    else 
+    return 0;
+}
+
+int main()
+{
+    char str[50];
+    int k=0;
+    scanf("%s",str);
+    char arr[strlen(str)];
+    stack* st=NULL;
+    for(int i=0;i<strlen(str);i++)
+    {
+        if(str[i]>=97 && str[i]<=122)
+            arr[k++]=str[i];
+        else {
+            if(isEmpty(st) || !priority(top(st),str[i]))
+                push(&st,str[i]);
+            else
+                {
+                    while(!isEmpty(st) && priority(top(st),str[i]))
+                    {
+                        char ch=top(st);
+                        pop(&st);
+                        arr[k++]=ch;
+                    }
+                    push(&st,str[i]);
+                }
+
+        }
+    }
+    while(!isEmpty(st))
+    {
+        arr[k++]=top(st);
+        pop(&st);
+    }
+    printf("%s",arr);
+}

@@ -1,0 +1,66 @@
+/* ------
+
+A pangram is a word or sentence that contains every letter of the alphabet. For example: the quick brown fox jumps over the lazy dog.
+
+Sample Input:
+4
+we promptly judged antique ivory buckles for the next prize
+we promptly judged antique ivory buckles for the prizes
+the quick brown fox jumps over the lazy dog
+the quick brown fox jump over the lazy dog
+
+Sample output:
+1010
+ --------- */
+
+
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+
+
+char* isPanagram(char** arr,int n) {
+    char* res=(char*)malloc(sizeof(char)*n);
+    int i;
+    for(i=0;i<n;i++){
+        int a[26]={0},c=0;
+        for(int j=0;j<strlen(*(arr+i));j++) {  
+            if((*(*(arr+i)+j))!=' ' && a[*(*(arr+i)+j)-97]==0) 
+            {
+                a[*(*(arr+i)+j)-97]=1;
+                c++;
+            }
+        }
+        if(c==26)
+        res[i]='1';
+        else
+        res[i]='0';
+    }
+    res[i]='\0';
+    return res;
+}
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int n;
+    scanf("%d",&n);
+    //char arr[n][100000];
+    char** arr=(char**)malloc(sizeof(char*)*n);
+    //char temp;
+    //scanf("%c",&temp);
+    for(int i=0;i<n;i++) {
+       
+       arr[i] = (char*)malloc(sizeof(char)* 100000);
+       char ch;
+       scanf("%c", &ch);
+       scanf("%[^\n]s" , arr[i]);
+       //gets(arr[i]);
+      
+    }
+    char* res=isPanagram(arr,n);
+    printf("%s",res);
+    return 0;
+}
